@@ -1,0 +1,239 @@
+/* 全局变量引用 */
+@import '@/GlobalStyles.module.less';
+
+/* 浮动控制按钮区域 */
+.floatingControls {
+  width: 240px;
+  position: fixed;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+/* 开始抽取按钮 */
+.startBtnLarge {
+  background: linear-gradient(135deg, @primary-color 0%, @primary-light 100%);
+  color: white;
+  border: none;
+  padding: 1.25rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  min-width: 220px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  box-shadow: 0 6px 20px rgba(100, 108, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 按钮发光效果 */
+.startBtnLarge::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%);
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}
+
+.startBtnLarge:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(100, 108, 255, 0.5);
+}
+
+.startBtnLarge:active:not(:disabled) {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(100, 108, 255, 0.4);
+}
+
+.startBtnLarge:disabled {
+  background: linear-gradient(135deg, #555 0%, #666 100%);
+  color: #888;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 停止抽取按钮 */
+.stopBtnLarge {
+  background: linear-gradient(135deg, #ff4d4f 0%, #ff7875 100%);
+  color: white;
+  border: none;
+  padding: 1.25rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  min-width: 220px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  box-shadow: 0 6px 20px rgba(255, 77, 79, 0.3);
+  animation: pulse 1.5s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 停止按钮发光效果 */
+.stopBtnLarge::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%);
+  transform: rotate(45deg);
+  animation: shine 2s infinite;
+}
+
+.stopBtnLarge:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(255, 77, 79, 0.5);
+  animation-duration: 1s;
+}
+
+.stopBtnLarge:active:not(:disabled) {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(255, 77, 79, 0.4);
+  animation-duration: 2s;
+}
+
+.stopBtnLarge:disabled {
+  background: linear-gradient(135deg, #555 0%, #666 100%);
+  color: #888;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  animation: none;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 6px 20px rgba(255, 77, 79, 0.3);
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+    box-shadow: 0 10px 25px rgba(255, 77, 79, 0.4);
+  }
+}
+
+/* 按钮图标样式 */
+.btnIcon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+/* 按钮文本样式 */
+.btnText {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* 状态提示文本样式 */
+.statusText {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  color: @text-secondary;
+  font-size: 0.9rem;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid @border-color;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .floatingControls {
+    bottom: 2rem;
+  }
+
+  .startBtnLarge,
+  .stopBtnLarge {
+    padding: 1rem 2rem;
+    font-size: 1.3rem;
+    min-width: 180px;
+    height: 60px;
+  }
+
+  .btnIcon {
+    font-size: 1.5rem;
+  }
+
+  .btnText {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .floatingControls {
+    bottom: 1.5rem;
+  }
+
+  .startBtnLarge,
+  .stopBtnLarge {
+    font-size: 1.2rem;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .btnIcon {
+    font-size: 1.3rem;
+  }
+
+  .btnText {
+    font-size: 1.2rem;
+  }
+
+  .statusText {
+    font-size: 0.85rem;
+  }
+}

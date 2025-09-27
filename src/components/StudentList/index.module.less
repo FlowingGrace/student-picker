@@ -1,0 +1,165 @@
+/* 全局变量引用 */
+@import '../../GlobalStyles.module.less';
+
+/* 学生列表区域样式 */
+.studentsSection {
+  background-color: @surface-color;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid @border-color;
+  box-shadow: @shadow-light;
+  transition: all 0.3s ease;
+}
+
+.studentsSection:hover {
+  box-shadow: @shadow-medium;
+  border-color: rgba(100, 108, 255, 0.3);
+}
+
+.studentsSection h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: @text-primary;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.studentsSection h2::before {
+  content: '👥';
+  font-size: 1.8rem;
+}
+
+/* 学生列表容器 */
+.studentsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: @surface-light;
+  border-radius: 8px;
+  border: 1px solid @border-color;
+  transition: all 0.2s ease;
+}
+
+/* 学生卡片样式 */
+.studentItem {
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 0.75rem 1.25rem;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* 学生卡片悬停效果 */
+.studentItem:hover {
+  background-color: rgba(100, 108, 255, 0.3);
+  transform: translateY(-2px) scale(1.03);
+  border-color: @primary-light;
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.2);
+}
+
+/* 学生卡片激活状态 */
+.studentItem:active {
+  transform: translateY(0) scale(1.01);
+}
+
+/* 班级名称样式 */
+.studentItem::after {
+  content: attr(data-class);
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  background: @primary-color;
+  color: white;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0 0 0 8px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.studentItem:hover::after {
+  opacity: 1;
+}
+
+/* 空列表提示 */
+.emptyMessage {
+  color: @text-disabled;
+  text-align: center;
+  width: 100%;
+  padding: 3rem 1rem;
+  font-size: 1rem;
+  font-style: italic;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.emptyMessage::before {
+  content: '📚';
+  font-size: 3rem;
+}
+
+/* 列表滚动条样式 */
+.studentsContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.studentsContainer::-webkit-scrollbar-track {
+  background: @surface-color;
+  border-radius: 4px;
+}
+
+.studentsContainer::-webkit-scrollbar-thumb {
+  background: rgba(100, 108, 255, 0.3);
+  border-radius: 4px;
+}
+
+.studentsContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 108, 255, 0.5);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .studentsSection {
+    padding: 1rem;
+  }
+  
+  .studentsSection h2 {
+    font-size: 1.3rem;
+  }
+  
+  .studentsContainer {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+  
+  .studentItem {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    width: calc(50% - 0.25rem);
+    text-align: center;
+  }
+  
+  .studentItem::after {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .studentItem {
+    width: 100%;
+  }
+}

@@ -1,0 +1,271 @@
+// 引入全局变量
+@import '../../GlobalStyles.module.less';
+
+/* 全屏抽取覆盖层 */
+.fullscreenExtractionOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(15, 23, 42, 0.95));
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease-out;
+  overflow: hidden;
+  
+}
+
+/* 背景装饰效果 */
+.fullscreenExtractionOverlay::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 30% 40%, rgba(100, 108, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(100, 108, 255, 0.1) 0%, transparent 30%);
+  animation: rotateBackground 30s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateBackground {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 粒子容器 */
+.particlesContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* 抽取动画容器 */
+.extractingAnimation {
+  min-width: 400px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10;
+  position: relative;
+  padding: 4rem 2rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  max-width: 90%;
+  animation: containerAppear 0.7s ease-out;
+}
+
+@keyframes containerAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* 大型旋转动画 */
+.spinnerLarge {
+  width: 140px;
+  height: 140px;
+  border: 8px solid rgba(255, 255, 255, 0.05);
+  border-top-color: @primary-color;
+  border-bottom-color: @primary-color;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: relative;
+  will-change: transform;
+  box-shadow: 0 0 40px rgba(100, 108, 255, 0.3);
+}
+
+.spinnerLarge::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  right: -16px;
+  bottom: -16px;
+  border: 3px solid rgba(100, 108, 255, 0.2);
+  border-radius: 50%;
+  animation: spin 3s linear infinite reverse;
+  will-change: transform;
+}
+
+.spinnerLarge::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: @primary-color;
+  border-radius: 50%;
+  box-shadow: 0 0 20px @primary-color, 0 0 30px @primary-color;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg) translateZ(0); }
+  to { transform: rotate(360deg) translateZ(0); }
+}
+
+/* 抽取中文字 */
+.extractingTextLarge {
+  font-size: 2.5rem;
+  color: @primary-color;
+  font-weight: 700;
+  margin-top: 2rem;
+  text-shadow: 0 0 15px rgba(100, 108, 255, 0.8), 0 0 30px rgba(100, 108, 255, 0.4);
+  animation: glowPulse 2s ease-in-out infinite;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+@keyframes glowPulse {
+  0%, 100% { 
+    text-shadow: 0 0 15px rgba(100, 108, 255, 0.8), 
+                 0 0 30px rgba(100, 108, 255, 0.5); 
+    opacity: 1;
+  }
+  50% { 
+    text-shadow: 0 0 25px rgba(100, 108, 255, 1), 
+                 0 0 50px rgba(100, 108, 255, 0.8), 
+                 0 0 70px rgba(100, 108, 255, 0.5); 
+    opacity: 0.9;
+  }
+}
+
+/* 闪烁的学生名字容器 */
+.flashingStudentsNames {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  max-width: 90%;
+  padding: 1rem;
+}
+
+/* 闪烁的学生名字 */
+.flashingStudentName {
+  font-size: 1.8rem;
+  color: @primary-color;
+  font-weight: 600;
+  opacity: 0;
+  animation: blink 1s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(100, 108, 255, 0.6);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background: rgba(100, 108, 255, 0.1);
+  border: 1px solid rgba(100, 108, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 15px rgba(100, 108, 255, 0.5); }
+  50% { opacity: 0.7; transform: scale(1.1); box-shadow: 0 0 25px rgba(100, 108, 255, 0.8); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .extractingAnimation {
+    padding: 1.5rem;
+  }
+  
+  .spinnerLarge {
+    width: 120px;
+    height: 120px;
+    border-width: 6px;
+  }
+  
+  .spinnerLarge::before {
+    top: -14px;
+    left: -14px;
+    right: -14px;
+    bottom: -14px;
+    border-width: 2px;
+  }
+  
+  .extractingTextLarge {
+    font-size: 2rem;
+    margin-top: 1.5rem;
+    letter-spacing: 2px;
+  }
+  
+  .flashingStudentsNames {
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .flashingStudentName {
+    font-size: 1.5rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .extractingAnimation {
+    padding: 1rem;
+    border-radius: 15px;
+  }
+  
+  .spinnerLarge {
+    width: 100px;
+    height: 100px;
+    border-width: 5px;
+  }
+  
+  .spinnerLarge::before {
+    top: -12px;
+    left: -12px;
+    right: -12px;
+    bottom: -12px;
+  }
+  
+  .spinnerLarge::after {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .extractingTextLarge {
+    font-size: 1.6rem;
+    margin-top: 1.2rem;
+    letter-spacing: 1px;
+  }
+  
+  .flashingStudentsNames {
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+    padding: 0.5rem;
+  }
+  
+  .flashingStudentName {
+    font-size: 1.2rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

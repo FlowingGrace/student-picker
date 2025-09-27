@@ -1,0 +1,457 @@
+:global {
+  #root {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+  }
+}
+
+
+.app-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* 确保body有足够的高度支持全屏拖拽 */
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* 全局禁止文本选择，防止拖拽文件时意外选中文本 */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 允许表单元素和文本区域中的文本选择 */
+input,
+textarea,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* 导入区域样式 */
+.import-section {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.import-section h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.import-section h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #646cff;
+}
+
+/* 导入选项样式 */
+.import-option {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.import-option:last-child {
+  margin-bottom: 0;
+}
+
+/* 全屏拖拽覆盖层样式 */
+.fullscreen-drag-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(100, 108, 255, 0.8);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.drag-overlay-content {
+  text-align: center;
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.drop-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 1rem;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.drag-overlay-content h2 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.drag-overlay-content p {
+  font-size: 1.1rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* 标题容器样式 */
+.header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* 顶部触发区域 - 用于检测鼠标是否移动到页面顶端 */
+.top-trigger-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  z-index: 110;
+  cursor: default;
+}
+
+/* 可隐藏的顶部工具栏 */
+.hidden-top-toolbar {
+  position: fixed;
+  top: -60px;
+  /* 默认隐藏在顶部外 */
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 100;
+  transition: top 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 鼠标移入顶部触发区域时显示工具栏 */
+.top-trigger-area:hover+.hidden-top-toolbar,
+.hidden-top-toolbar:hover {
+  top: 0;
+}
+
+/* 确保工具栏内容不会溢出 */
+.hidden-top-toolbar select,
+.hidden-top-toolbar button {
+  box-sizing: border-box;
+}
+
+/* 工具栏提示元素 */
+.toolbar-hint {
+  position: fixed;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 101;
+  animation: fadeInOut 8s ease-in-out;
+}
+
+/* 提示元素动画 */
+@keyframes fadeInOut {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  10%,
+  90% {
+    opacity: 0.8;
+  }
+}
+
+/* 工具栏内容容器 */
+.toolbar-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* 右侧工具按钮组 */
+.toolbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 文件上传按钮样式 */
+.file-upload-label {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.file-upload-btn {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* 导入Excel图标按钮样式 */
+.file-upload-btn-small {
+  background-color: #646cff;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-upload-btn-small:hover:not(:disabled) {
+  background-color: #535bf2;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(100, 108, 255, 0.3);
+}
+
+.file-upload-btn:hover:not(:disabled) {
+  background-color: #535bf2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.4);
+}
+
+/* 导入提示文本样式 */
+.import-hint {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 小型导入提示文本样式 */
+.import-hint-small {
+  color: #888;
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* 学生列表区域样式 */
+.students-section {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.students-section h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.students-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.student-item {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.student-item:hover {
+  background-color: rgba(100, 108, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.empty-message {
+  color: #888;
+  text-align: center;
+  width: 100%;
+  padding: 2rem;
+}
+
+/* 抽取动画样式 */
+.extracting-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #646cff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-large {
+  width: 120px;
+  height: 120px;
+  border: 6px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #646cff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: relative;
+  will-change: transform;
+}
+
+.spinner-large::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  border: 2px solid rgba(100, 108, 255, 0.3);
+  border-radius: 50%;
+  animation: spin 3s linear infinite;
+  will-change: transform;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg) translateZ(0);
+  }
+
+  to {
+    transform: rotate(360deg) translateZ(0);
+  }
+}
+
+/* 名字闪烁动画 */
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.extracting-text {
+  font-size: 1.2rem;
+  color: #646cff;
+  font-weight: 500;
+}
+
+.extracting-text-large {
+  font-size: 2rem;
+  color: #646cff;
+  font-weight: 600;
+  margin-top: 1rem;
+  text-shadow: 0 0 10px rgba(100, 108, 255, 0.8);
+  animation: glowPulse 2s ease-in-out infinite;
+  letter-spacing: 2px;
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(100, 108, 255, 0.8),
+      0 0 20px rgba(100, 108, 255, 0.5);
+  }
+
+  50% {
+    text-shadow: 0 0 15px rgba(100, 108, 255, 0.9),
+      0 0 30px rgba(100, 108, 255, 0.7),
+      0 0 40px rgba(100, 108, 255, 0.5);
+  }
+}

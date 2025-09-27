@@ -1,0 +1,440 @@
+/* 全局变量引用 */
+@import '../../GlobalStyles.module.less';
+
+/* 顶部触发区域 - 用于检测鼠标是否移动到页面顶端 */
+.topTriggerArea {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  z-index: 9;
+  cursor: default;
+}
+
+/* 可隐藏的顶部工具栏 */
+.hiddenTopToolbar {
+  position: fixed;
+  top: -60px; /* 默认隐藏在顶部外 */
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid @border-color;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 鼠标移入顶部触发区域时显示工具栏 */
+.topTriggerArea:hover + .hiddenTopToolbar,
+.hiddenTopToolbar:hover {
+  top: 0;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* 确保工具栏内容不会溢出 */
+.hiddenTopToolbar select,
+.hiddenTopToolbar button {
+  box-sizing: border-box;
+}
+
+/* 工具栏提示元素 */
+.toolbarHint {
+  position: fixed;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: @primary-color;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 101;
+  animation: fadeInOut 8s ease-in-out;
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+}
+
+/* 提示元素动画 */
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  10%, 90% { opacity: 0.9; transform: translateX(-50%) translateY(0); }
+}
+
+/* 工具栏内容容器 */
+.toolbarContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* 右侧工具按钮组 */
+.toolbarButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* 文件上传按钮样式 */
+.fileUploadLabel {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.fileUploadBtnSmall {
+  background-color: @primary-color;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(100, 108, 255, 0.3);
+}
+
+.fileUploadBtnSmall:hover:not(:disabled) {
+  background-color: @primary-hover;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(100, 108, 255, 0.4);
+}
+
+.fileUploadBtnSmall:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 班级选择下拉框样式 */
+.classList {
+  background-color: @surface-light;
+  color: @text-primary;
+  border: 2px solid @border-color;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  min-width: 120px;
+  height: 42px;
+  cursor: pointer;
+}
+
+.classList:hover:not(:disabled) {
+  border-color: @primary-light;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.classList:focus {
+  border-color: @primary-color;
+  box-shadow: 0 0 0 3px rgba(100, 108, 255, 0.1);
+}
+
+.classList:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: @text-disabled;
+}
+
+/* 删除班级按钮样式 */
+.deleteClassBtn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
+}
+
+.deleteClassBtn:hover:not(:disabled) {
+  background-color: #ff7875;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255, 77, 79, 0.4);
+}
+
+.deleteClassBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 保存到班级按钮样式 */
+.saveToClassBtn {
+  background-color: #52c41a;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(82, 196, 26, 0.3);
+}
+
+.saveToClassBtn:hover:not(:disabled) {
+  background-color: #73d13d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(82, 196, 26, 0.4);
+}
+
+.saveToClassBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 全屏按钮样式 */
+.fullscreenBtn {
+  background-color: @surface-light;
+  color: @text-primary;
+  border: 1px solid @border-color;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreenBtn:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: @primary-light;
+  transform: translateY(-1px);
+}
+
+.fullscreenBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 退出全屏按钮样式 */
+.exitFullscreenBtn {
+  background-color: #fa8c16;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(250, 140, 22, 0.3);
+}
+
+.exitFullscreenBtn:hover:not(:disabled) {
+  background-color: #ffa940;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(250, 140, 22, 0.4);
+}
+
+.exitFullscreenBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 班级标签样式 */
+.classLabel {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  color: @primary-light;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-bottom: 1px solid @border-color;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+.classLabel:first-child {
+  margin-top: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .hiddenTopToolbar {
+    padding: 0 1rem;
+    height: auto;
+    min-height: 60px;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .toolbarContent {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .toolbarButtons {
+    width: 100%;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  
+  .classList {
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .toolbarButtons {
+    flex-wrap: wrap;
+  }
+  
+  .fileUploadBtnSmall,
+  .deleteClassBtn,
+  .fullscreenBtn,
+  .exitFullscreenBtn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .classList {
+    height: 36px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+    min-width: 90px;
+  }
+}
+
+.fileUploadBtnSmall:hover:not(:disabled) {
+  background-color: #535bf2;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(100, 108, 255, 0.3);
+}
+
+/* 班级选择下拉框 */
+.classSelect {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 0 0.75rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.classSelect:hover:not(:disabled) {
+  border-color: #646cff;
+}
+
+.classSelect:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 删除班级按钮 */
+.deleteClassBtn {
+  background-color: rgba(255, 87, 34, 0.7);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteClassBtn:hover:not(:disabled) {
+  background-color: #ff5722;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 87, 34, 0.3);
+}
+
+/* 保存到班级按钮 */
+.saveToClassBtn {
+  background-color: rgba(76, 175, 80, 0.7);
+  color: white;
+  border: none;
+  padding: 0 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.saveToClassBtn:hover:not(:disabled) {
+  background-color: #4caf50;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* 全屏按钮 */
+.fullscreenBtn {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreenBtn:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}

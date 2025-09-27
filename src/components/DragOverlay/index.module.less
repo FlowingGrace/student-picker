@@ -1,0 +1,162 @@
+// 引入全局变量
+@import '../../GlobalStyles.module.less';
+
+/* 全屏拖拽覆盖层样式 */
+.fullscreenDragOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.8), rgba(79, 70, 229, 0.8));
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease-out;
+  backdrop-filter: blur(5px);
+}
+
+/* 背景网格效果 */
+.fullscreenDragOverlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: -1px -1px;
+  pointer-events: none;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 20px 20px; }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dragOverlayContent {
+  text-align: center;
+  color: white;
+  padding: 3rem;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(15px);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  max-width: 500px;
+  width: 90%;
+  animation: contentAppear 0.6s ease-out;
+  transition: all 0.3s ease;
+}
+
+.dragOverlayContent:hover {
+  border-color: white;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.5), 0 0 40px rgba(100, 108, 255, 0.4);
+  transform: scale(1.02);
+}
+
+@keyframes contentAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+    border-color: transparent;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.dropIcon {
+  font-size: 6rem;
+  display: block;
+  margin-bottom: 1.5rem;
+  animation: bounce 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+.dragOverlayContent h2 {
+  font-size: 2.5rem;
+  margin: 0 0 0.8rem 0;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+}
+
+.dragOverlayContent p {
+  font-size: 1.2rem;
+  margin: 0;
+  opacity: 0.9;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 额外提示信息 */
+.fileFormatHint {
+  margin-top: 1rem;
+  font-size: 1rem !important;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .dragOverlayContent {
+    padding: 2.5rem 2rem;
+  }
+  
+  .dropIcon {
+    font-size: 5rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .dragOverlayContent h2 {
+    font-size: 2rem;
+  }
+  
+  .dragOverlayContent p {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dragOverlayContent {
+    padding: 2rem 1.5rem;
+    border-radius: 15px;
+  }
+  
+  .dropIcon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .dragOverlayContent h2 {
+    font-size: 1.8rem;
+  }
+  
+  .dragOverlayContent p {
+    font-size: 1rem;
+  }
+  
+  .fileFormatHint {
+    font-size: 0.9rem !important;
+  }
+}

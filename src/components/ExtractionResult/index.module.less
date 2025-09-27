@@ -1,0 +1,297 @@
+// 引入全局变量
+@import '../../GlobalStyles.module.less';
+
+/* 全屏结果覆盖层 */
+.fullscreenResultOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 抽取结果容器 */
+.extractedResultFullscreen {
+  text-align: center;
+  color: white;
+  padding: 3rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.15), rgba(79, 70, 229, 0.15));
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(100, 108, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(31, 38, 135, 0.37),
+    0 0 60px rgba(100, 108, 255, 0.2);
+  max-width: 80%;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: resultAppear 0.6s ease-out;
+}
+
+@keyframes resultAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    box-shadow: 0 0 0 rgba(100, 108, 255, 0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    box-shadow: 
+      0 8px 32px rgba(31, 38, 135, 0.37),
+      0 0 60px rgba(100, 108, 255, 0.2);
+  }
+}
+
+.extractedResultFullscreen h3 {
+  font-size: 2.5rem;
+  margin: 0 0 2.5rem 0;
+  color: @primary-color;
+  text-shadow: 0 0 15px rgba(100, 108, 255, 0.7);
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.extractedResultFullscreen h3::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, @primary-color, transparent);
+  border-radius: 2px;
+  animation: pulseLine 2s ease-in-out infinite;
+}
+
+@keyframes pulseLine {
+  0%, 100% { width: 100px; opacity: 0.7; }
+  50% { width: 150px; opacity: 1; }
+}
+
+.extractedResultFullscreen h4 {
+  font-size: 3rem;
+  margin: 0 0 1.5rem 0;
+  color: white;
+  text-shadow: 0 0 20px rgba(100, 108, 255, 0.9);
+  animation: nameGlow 2s ease-in-out infinite;
+  letter-spacing: 2px;
+}
+
+@keyframes nameGlow {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(100, 108, 255, 0.8), 0 0 40px rgba(100, 108, 255, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(100, 108, 255, 1), 0 0 60px rgba(100, 108, 255, 0.8);
+  }
+}
+
+.extractedResultFullscreen p {
+  font-size: 1.3rem;
+  margin: 0.5rem 0;
+  opacity: 0.9;
+  color: @text-secondary;
+}
+
+/* 点击继续提示 */
+.clickToClose {
+  margin-top: 3rem !important;
+  font-size: 1rem !important;
+  color: #aaa;
+  opacity: 0.7 !important;
+  animation: fadeIn 1s ease-out 0.5s both;
+  transition: opacity 0.3s ease;
+}
+
+.clickToClose:hover {
+  opacity: 1 !important;
+  color: white;
+}
+
+/* 抽取学生列表 */
+.extractedStudentsList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  // flex-direction: column;
+  gap: 1rem;
+  margin: 2rem 0;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* 美化滚动条 */
+.extractedStudentsList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.extractedStudentsList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.extractedStudentsList::-webkit-scrollbar-thumb {
+  background: rgba(100, 108, 255, 0.5);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.extractedStudentsList::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 108, 255, 0.8);
+}
+
+/* 单个抽取学生项 */
+.extractedStudentItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  animation: itemAppear 0.5s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.extractedStudentItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(100, 108, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.extractedStudentItem:hover {
+  background: linear-gradient(135deg, rgba(100, 108, 255, 0.2), rgba(100, 108, 255, 0.1));
+  border-color: @primary-color;
+  transform: translateX(5px);
+  box-shadow: 0 4px 20px rgba(100, 108, 255, 0.3);
+}
+
+.extractedStudentItem:hover::before {
+  left: 100%;
+}
+
+@keyframes itemAppear {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 排名 */
+.rank {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: @primary-color;
+  min-width: 40px;
+  text-shadow: 0 0 5px rgba(100, 108, 255, 0.5);
+}
+
+/* 学生姓名 */
+.name {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: white;
+  flex: 1;
+}
+
+/* 学生班级 */
+.class {
+  font-size: 1.2rem;
+  color: @text-secondary;
+  margin-left: auto;
+  background: rgba(100, 108, 255, 0.2);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  border: 1px solid rgba(100, 108, 255, 0.3);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .extractedResultFullscreen {
+    padding: 2rem;
+    max-width: 90%;
+  }
+  
+  .extractedResultFullscreen h3 {
+    font-size: 2rem;
+  }
+  
+  .extractedResultFullscreen h4 {
+    font-size: 2.2rem;
+  }
+  
+  .rank {
+    font-size: 1.5rem;
+  }
+  
+  .name {
+    font-size: 1.3rem;
+  }
+  
+  .class {
+    font-size: 1rem;
+    padding: 0.2rem 0.6rem;
+  }
+  
+  .extractedStudentItem {
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .extractedResultFullscreen {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+  
+  .extractedResultFullscreen h3 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  
+  .extractedResultFullscreen h4 {
+    font-size: 2rem;
+  }
+  
+  .extractedStudentsList {
+    gap: 0.8rem;
+  }
+  
+  .extractedStudentItem {
+    padding: 0.8rem 1rem;
+  }
+  
+  .clickToClose {
+    font-size: 0.9rem !important;
+  }
+}
