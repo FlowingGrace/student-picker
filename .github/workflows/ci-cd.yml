@@ -48,10 +48,6 @@ jobs:
       - name: Run ESLint
         run: pnpm run lint
 
-      # Step 6: Run TypeScript compilation check to ensure type safety
-      - name: Run TypeScript compilation check
-        run: pnpm run build --if-present
-
       # Step 7: Build the production-ready application
       - name: Build project
         run: pnpm run build
