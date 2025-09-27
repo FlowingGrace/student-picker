@@ -1,0 +1,71 @@
+# CI/CD Pipeline for React + TypeScript + Vite Project
+# This workflow runs on every push and pull request to main/master branches
+# For Netlify deployment, you need to set up two secrets in your GitHub repository:
+# 1. NETLIFY_AUTH_TOKEN - Your personal access token from Netlify
+# 2. NETLIFY_SITE_ID - The site ID of your Netlify site
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # Main build job to check, test, and build the application
+  build:
+    # Use the latest Ubuntu environment
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js environment with caching
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm' # Cache pnpm packages for faster builds
+
+      # Step 3: Install pnpm package manager
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      # Step 4: Install project dependencies
+      - name: Install dependencies
+        run: pnpm install
+
+      # Step 5: Run ESLint to check for code quality issues
+      - name: Run ESLint
+        run: pnpm run lint
+
+      # Step 6: Run TypeScript compilation check to ensure type safety
+      - name: Run TypeScript compilation check
+        run: pnpm run build --if-present
+
+      # Step 7: Build the production-ready application
+      - name: Build project
+        run: pnpm run build
+
+      # Step 8: Upload the build artifacts for later use (e.g., deployment)
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: dist/
+          retention-days: 7 # Keep artifacts for 7 days
+
+      # Step 9: Deploy to Netlify
+      - name: Deploy to Netlify
+        if: success() && github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --prod --dir=dist
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
