@@ -126,15 +126,6 @@ function App() {
     };
   }, []);
 
-  const loadAllStudents = async () => {
-    try {
-      const allStudents = await dbManager.getAllStudents();
-      setStudents(allStudents);
-    } catch (error) {
-      console.error('加载学生数据失败:', error);
-    }
-  };
-
   const deleteClass = async () => {
     if (selectedClass === 'all') {
       alert('不能删除"全部班级"选项');

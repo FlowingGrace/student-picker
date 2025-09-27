@@ -1,10 +1,8 @@
-type ClassValue = string | number | null | undefined | ClassDictionary | ClassArray;
 interface ClassDictionary {
-  [key: string]: any;
+  [key: string]: boolean | string | number | undefined | null;
 }
-interface ClassArray extends Array<ClassValue> {}
 
-export function classNames(...args: ClassValue[]): string {
+export function classNames(...args: (string | number | ClassDictionary | (string | number | ClassDictionary | null | undefined)[])[]): string {
   const classes: string[] = [];
 
   for (const arg of args) {
@@ -14,8 +12,13 @@ export function classNames(...args: ClassValue[]): string {
       classes.push(String(arg));
     } else if (Array.isArray(arg)) {
       if (arg.length) {
-        const inner = classNames(...arg);
-        if (inner) classes.push(inner);
+        // 过滤掉null和undefined，确保传递给递归调用的参数都是有效的
+        const validArgs = arg.filter(item => item !== null && item !== undefined);
+        if (validArgs.length > 0) {
+          // 使用更精确的类型，避免使用any
+          const inner = classNames(...validArgs as [string | number | ClassDictionary | (string | number | ClassDictionary)[]]);
+          if (inner) classes.push(inner);
+        }
       }
     } else if (typeof arg === "object") {
       for (const [key, value] of Object.entries(arg)) {

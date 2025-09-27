@@ -41,7 +41,7 @@ class ParticleManager {
     this.container.appendChild(particle);
 
     // 强制重绘
-    particle.offsetHeight;
+    void particle.offsetHeight;
 
     // 动画
     setTimeout(() => {

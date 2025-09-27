@@ -109,7 +109,7 @@ class DBManager {
       try {
         const existingClassData = await this.getStudentsByClass(className);
         existingStudents = existingClassData;
-      } catch (error) {
+      } catch {
         // 如果班级不存在，使用空数组
         console.log(`班级 ${className} 不存在，将创建新班级`);
       }

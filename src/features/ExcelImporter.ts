@@ -28,7 +28,19 @@ class ExcelImporter {
           const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
           // 处理Excel数据，假设第一列为姓名，第二列为班级
-          const students = jsonData.map((row: any, index: number) => {
+          interface ExcelRow {
+            [key: string]: unknown;
+            0?: unknown;
+            1?: unknown;
+            '姓名'?: unknown;
+            '班级'?: unknown;
+            'name'?: unknown;
+            'class'?: unknown;
+            'NAME'?: unknown;
+            'CLASS'?: unknown;
+          }
+          
+          const students = (jsonData as ExcelRow[]).map((row: ExcelRow, index: number) => {
             // 尝试从不同格式的Excel数据中提取信息
             const name = row[0] || row['姓名'] || row['name'] || row['NAME'] || `学生${index + 1}`;
             const className = row[1] || row['班级'] || row['class'] || row['CLASS'] || undefined;
